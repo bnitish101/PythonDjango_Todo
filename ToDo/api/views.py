@@ -43,3 +43,25 @@ def toDoCreate(request):
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def toDoUpdate(request, pk):
+    if request.method == 'POST':
+        todo_detail = ToDo.objects.get(pk=pk)
+        # serializer = ToDoSerializer(instance=todo_detail, data=request.data) # this will work fine with instance
+        serializer = ToDoSerializer(todo_detail, data=request.data) # this will work fine without instance too, refernce from official document (https://www.django-rest-framework.org/tutorial/2-requests-and-responses/)
+        
+        if serializer.is_valid():
+            serializer.save()
+            
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def toDoDelete(request, pk):
+    if request.method == 'DELETE':
+        todo_detail = ToDo.objects.get(pk=pk)
+        todo_detail.delete()
+        return Response('Deleted Successfully!', status=status.HTTP_204_NO_CONTENT)
+        # return Response('Deleted Successfully!')
+        
