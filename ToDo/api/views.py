@@ -23,7 +23,7 @@ def apiOverView(request):
 
 @api_view(['GET'])
 def toDoList(request):
-    todo = ToDo.objects.all()
+    todo = ToDo.objects.all().order_by('-id')
     serializer = ToDoSerializer(todo, many=True)
     return Response(serializer.data)
 

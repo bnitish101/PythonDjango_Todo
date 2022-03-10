@@ -96,6 +96,7 @@
             toDoList()
             function toDoList() {
                 var wrapper = document.getElementById('list-wrapper')
+                wrapper.innerHTML = ''
                 var url = 'http://127.0.0.1:8000/api/todo-list/'
 
                 fetch(url)
@@ -162,6 +163,7 @@
                     }
                 ).then(function(response){
                     toDoList()
+                    document.getElementById('form').reset()
                 })
 
             })
