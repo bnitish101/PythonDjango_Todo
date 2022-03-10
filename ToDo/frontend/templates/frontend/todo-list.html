@@ -94,6 +94,7 @@
         <script type="text/javascript">
             
             toDoList()
+            // ---------------------- cb+ s (show/display todo list in inner html) ---------------------- //
             function toDoList() {
                 var wrapper = document.getElementById('list-wrapper')
                 wrapper.innerHTML = ''
@@ -125,6 +126,7 @@
 
                 })
             }
+            // ---------------------- cb+ e (show/display todo list in inner html) ---------------------- //
 
             // ---------------------- cb+ s (csrf token in ajax django) ---------------------- //
             function getCookie(name) {
@@ -145,6 +147,7 @@
             var csrftoken = getCookie('csrftoken');
             // ---------------------- cb+ e (csrf token in ajax django) ---------------------- //
 
+            // ---------------------- cb+ s (create/add new todo) ---------------------- //
             var form = document.getElementById('form-wrapper')
             form.addEventListener('submit', function (e) {
                 e.preventDefault()
@@ -167,6 +170,13 @@
                 })
 
             })
+            // ---------------------- cb+ e (create/add new todo) ---------------------- //
+            
+            // ---------------------- cb+ s (update/edit todo) ---------------------- //
+            function todoUpdate() {
+                cookies.log('Updated todo!!!')
+            }
+            // ---------------------- cb+ e (update/edit todo) ---------------------- //
         </script>
     </body>
 </html>
