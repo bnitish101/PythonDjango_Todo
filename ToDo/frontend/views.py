@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
 # Create your views here.
-def home(request):
+def toDoList(request):
     context = {}
-    return render(request, 'frontend/home.html', context)
+    return render(request, 'frontend/todo-list.html', context)
