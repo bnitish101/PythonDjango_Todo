@@ -122,6 +122,20 @@
                                     </div>
                                 `
                         wrapper.innerHTML += item
+
+                        // this code will add event only in tbe last element of this loop :(
+                        // var editBtn = document.getElementsByClassName('edit')[i]
+                        // editBtn.addEventListener('click', function(){
+                        //     todoUpdate()
+                        // })
+                    }
+                    
+                    // this will add event to all elemt but with the same valule :(
+                    for (let i = 0; i < list.length; i++) {
+                        var editBtn = document.getElementsByClassName('edit')[i]
+                        editBtn.addEventListener('click', function(){
+                            todoUpdate(list[i])
+                        })
                     }
 
                 })
@@ -154,6 +168,11 @@
                 console.log('form submit.')
 
                 var url = 'http://127.0.0.1:8000/api/todo-create/'
+                if (activeItme) {
+                    url = `http://127.0.0.1:8000/api/todo-update/${activeItme.id}/`
+                    activeItme = null
+                }
+                
                 var title = document.getElementById('title').value
                 
                 fetch(url, {
@@ -173,8 +192,11 @@
             // ---------------------- cb+ e (create/add new todo) ---------------------- //
             
             // ---------------------- cb+ s (update/edit todo) ---------------------- //
-            function todoUpdate() {
-                cookies.log('Updated todo!!!')
+            var activeItme = null
+            function todoUpdate(item) {
+                console.log('Updated todo!!!', item)
+                activeItme = item
+                document.getElementById('title').value = activeItme.title
             }
             // ---------------------- cb+ e (update/edit todo) ---------------------- //
         </script>
