@@ -130,11 +130,16 @@
                         // })
                     }
                     
-                    // this will add event to all elemt but with the same valule :(
+                    // this will add click event to all element but with the same valule :(
                     for (let i = 0; i < list.length; i++) {
                         var editBtn = document.getElementsByClassName('edit')[i]
                         editBtn.addEventListener('click', function(){
                             todoUpdate(list[i])
+                        })
+
+                        var deleteBtn = document.getElementsByClassName('delete')[i]
+                        deleteBtn.addEventListener('click', function(){
+                            toDoDelete(list[i])
                         })
                     }
 
@@ -199,6 +204,26 @@
                 document.getElementById('title').value = activeItme.title
             }
             // ---------------------- cb+ e (update/edit todo) ---------------------- //
+            
+            // ---------------------- cb+ s (delete/remove todo) ---------------------- //
+            var activeItme = null
+            function toDoDelete(item) {
+                console.log('Delete todo!!!', item)
+                // activeItme = item
+                // document.getElementById('title').value = activeItme.title
+                fetch(`http://127.0.0.1:8000/api/todo-delete/${item.id}/`,
+                    {
+                        method:'DELETE',
+                        headers : {
+                            'content-type' : 'application/json',
+                            'X-CSRFToken' : csrftoken
+                        }
+                    }
+                ).then(function(response){
+                    toDoList()
+                })
+            }
+            // ---------------------- cb+ e (delete/remove todo) ---------------------- //
         </script>
     </body>
 </html>
