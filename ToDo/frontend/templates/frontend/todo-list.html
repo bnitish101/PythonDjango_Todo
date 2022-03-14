@@ -93,11 +93,12 @@
 
         <script type="text/javascript">
             
+            var list_snapshot = []
             toDoList()
             // ---------------------- cb+ s (show/display todo list in inner html) ---------------------- //
             function toDoList() {
                 var wrapper = document.getElementById('list-wrapper')
-                wrapper.innerHTML = ''
+                // wrapper.innerHTML = ''
                 var url = 'http://127.0.0.1:8000/api/todo-list/'
 
                 fetch(url)
@@ -109,13 +110,20 @@
                     for (let i = 0; i < list.length; i++) {
                         // var item = list[i];
                         
+                        try{
+                            document.getElementById(`data-row-${i}`).remove()
+                        } catch(err){
+                            console.log(err)
+                        }
+
+
                         let title = `<span class="title">${list[i].title}</span>`
                         if(list[i].completed == true){
                             title = `<strike class="title">${list[i].title}</strike>`
                         }
 
                         var item = `
-                                    <div id="data-row-${[i]}" class="task-wrapper flex-wrapper"> 
+                                    <div id="data-row-${i}" class="task-wrapper flex-wrapper"> 
                                         <div style="flex:7">
                                                 ${title}
                                         </div>
@@ -135,6 +143,14 @@
                         //     todoUpdate()
                         // })
                     }
+
+                    // set the snapshot with previuos data that we had
+                    if(list_snapshot.length > list.length){
+                        for(let i = list.length; i < list_snapshot.length; i++){
+                            document.getElementById(`data-row-${i}`).remove()
+                        }
+                    }
+                    list_snapshot = list
                     
                     // this will add click event to all element but with the same valule :(
                     for (let i = 0; i < list.length; i++) {
@@ -231,11 +247,9 @@
             // ---------------------- cb+ e (update/edit todo) ---------------------- //
             
             // ---------------------- cb+ s (delete/remove todo) ---------------------- //
-            var activeItme = null
             function toDoDelete(item) {
                 console.log('Delete todo!!!', item)
-                // activeItme = item
-                // document.getElementById('title').value = activeItme.title
+                
                 fetch(`http://127.0.0.1:8000/api/todo-delete/${item.id}/`,
                     {
                         method:'DELETE',
