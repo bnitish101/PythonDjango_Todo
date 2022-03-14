@@ -108,10 +108,16 @@
                     var list = data
                     for (let i = 0; i < list.length; i++) {
                         // var item = list[i];
+                        
+                        let title = `<span class="title">${list[i].title}</span>`
+                        if(list[i].completed == true){
+                            title = `<strike class="title">${list[i].title}</strike>`
+                        }
+
                         var item = `
                                     <div id="data-row-${[i]}" class="task-wrapper flex-wrapper"> 
                                         <div style="flex:7">
-                                                <span class="title">${list[i].title}</span>
+                                                ${title}
                                         </div>
                                         <div style="flex:1">
                                                 <button class="btn btn-sm btn-outline-info edit">Edit</button>
@@ -133,14 +139,33 @@
                     // this will add click event to all element but with the same valule :(
                     for (let i = 0; i < list.length; i++) {
                         var editBtn = document.getElementsByClassName('edit')[i]
+                        
+                        // if the function getting the last item, this may not work for all but it's owrking fine here with me.
+                        /*
                         editBtn.addEventListener('click', function(){
                             todoUpdate(list[i])
                         })
+                        */
+                        // to get all item use anothe techniques approach
+                        editBtn.addEventListener('click', (function(item){
+                            return function(){ 
+                                todoUpdate(item)
+                            }
+                        })(list[i]))
 
+                        // we can do same editBtn if it won't work.
                         var deleteBtn = document.getElementsByClassName('delete')[i]
                         deleteBtn.addEventListener('click', function(){
                             toDoDelete(list[i])
                         })
+
+                        var titleBtn = document.getElementsByClassName('title')[i]
+                        titleBtn.addEventListener('click', (function(item){
+                            return function(){ 
+                                strikeUstrike(item)
+                            }
+                        })(list[i]))
+
                     }
 
                 })
@@ -224,6 +249,24 @@
                 })
             }
             // ---------------------- cb+ e (delete/remove todo) ---------------------- //
+
+            // ---------------------- cb+ s (strike OR Unstrike todo) ---------------------- //
+            function strikeUstrike(item) {
+                console.log('Strike Clicked!')
+                item.completed = ! item.completed
+                var url = `http://127.0.0.1:8000/api/todo-update/${item.id}/`
+                fetch(url,{
+                    method : 'POST',
+                    headers : {
+                        'content-type' : 'application/json',
+                        'X-CSRFToken' : csrftoken 
+                    },
+                    body : JSON.stringify({'title':item.title, 'completed':item.completed})
+                }).then((response) => {
+                    toDoList()
+                })
+            }
+            // ---------------------- cb+ e (strike OR Unstrike todo) ---------------------- //
         </script>
     </body>
 </html>
